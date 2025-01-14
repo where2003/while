@@ -14,7 +14,7 @@ class MetaPrompt:
         self.expert_attitude = "no attitude"
         self.previous_expert = None  # 存储上一次询问的专家
         self.round = 0  # 记录当前是第几轮生成
-        self.expert_memories = {}  # 为每个专家单独存储记忆 
+        self.expert_memories = {}  # 为每个专家单独存储记忆
 
     def analyze(self, query):   
         self.output = "no answer"
