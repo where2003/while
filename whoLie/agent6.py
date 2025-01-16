@@ -1,3 +1,4 @@
+# 分数问题已经解决，正在解决反馈问题
 import re  # 导入正则表达式模块
 
 from llm_base import send_message
@@ -9,15 +10,15 @@ class MetaPrompt:
         self.model = model
         self.memory_service = MemoryService()
         self.expert_template = "You are an expert in {expert_area}. Your task is to assist with the following: {task}"
-        self.expert_library = []  # 存储专家库 
+        self.expert_library = []  # 存储专家库
         self.output = "no answer"
         self.expert_attitude = "no attitude"
         self.previous_expert = None  # 存储上一次询问的专家
         self.round = 0  # 记录当前是第几轮生成
         self.expert_memories = {}  # 为每个专家单独存储记忆
-        self.feedback="no feedback"
+        self.feedback = "no feedback"
 
-    def analyze(self, query):   
+    def analyze(self, query):
         self.output = "no answer"
         self.round += 1
 
@@ -45,20 +46,20 @@ class MetaPrompt:
             if "结果检验与整合专家" not in expert:
                 # 获取专家相关的历史记忆
                 expert_history = self.get_expert_memory(expert)
-                
+
                 expert_system = (
                     f"请你为{expert}布置任务。注意：\n"
                     f"1. 只提供与该专家工作相关的信息\n"
                     f"2. 如果这位专家之前参与过讨论，请告知其历史贡献\n"
                     f"3. 明确说明需要改进的地方"
                 )
-                
+
                 expert_user = (
                     f"问题：{query}\n"
                     f"专家历史记忆：{expert_history}\n"
                     f"请为专家布置明确的任务"
                 )
-                
+
                 expert_memory = send_message(expert_system, expert_user, self.model)
                 print(expert_memory)
 
@@ -93,7 +94,7 @@ class MetaPrompt:
         print(f"专家平均评分：{score_result['expert_avg']}")
         print(f"整体方案评分：{score_result['overall_score']}")
         print(f"是否通过：{score_result['passed']}")
-        
+
         if score_result['passed']:
             self.output = judge_response
         else:
@@ -121,15 +122,14 @@ class MetaPrompt:
             file.write(f"问题：{query}\n  答案：{final_answer}\n")
             file.write("-" * 50 + "\n")
         return self.output
-    
-    def generate_again(self):
-        return 
 
+    def generate_again(self):
+        return
 
     def extract_score_from_judge(self, judge_response):
         # 提取所有评分
         matches = re.findall(r"评分:\s*(\d+(\.\d+)?)\s*分", judge_response)
-        
+
         # 专家个人评分（除最后一个）
         expert_scores = []
         for match in matches[:-1]:
@@ -138,20 +138,20 @@ class MetaPrompt:
                 expert_scores.append(score)
             except ValueError:
                 continue
-        
+
         # 整体评分（最后一个）
         overall_score = float(matches[-1][0]) if matches else 0
-        
+
         # 计算专家平均分
         avg_expert_score = sum(expert_scores) / len(expert_scores) if expert_scores else 0
-        
+
         # 判断评分是否达标
         score_status = {
             'expert_avg': round(avg_expert_score, 2),
             'overall_score': overall_score,
             'passed': avg_expert_score >= 8 and overall_score >= 9
         }
-        
+
         return score_status
 
     def generate_feedback(self, final_score, judge_response):
@@ -161,13 +161,13 @@ class MetaPrompt:
             "2. 提供明确的改进方向\n"
             "3. 建议具体的优化步骤"
         )
-        
+
         feedback_user = (
             f"评分：{final_score}\n"
             f"评语：{judge_response}\n"
             "请生成有针对性的反馈"
         )
-        
+
         feedback = send_message(feedback_system, feedback_user, self.model)
         return feedback
 
@@ -182,7 +182,7 @@ class MetaPrompt:
         if expert == "结果检验与整合专家":
             return self.memory_service.get_all_memories()
         return self.expert_memories.get(expert, [])
-    
+
     def add_expert_memory(self, expert, memory):
         """为指定专家添加记忆"""
         if expert not in self.expert_memories:
