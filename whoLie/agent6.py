@@ -192,7 +192,8 @@ class MetaPrompt:
 
 # 示例运行
 meta_prompt = MetaPrompt('gpt-4o-mini')
-user_query = "怎么用python实现一个24点小游戏？给我具体实现"
+user_query="生成一首莎士比亚风格的诗词"
+# user_query = "怎么用python实现一个24点小游戏？给我具体实现"
 final_response = meta_prompt.analyze(user_query)
 print("\n\n\n\n\n\n\n\n\n最终结果：")
 print(final_response)

@@ -1399,3 +1399,211 @@ if __name__ == "__main__":
 
 希望这个实现满足您的需求，让您尽情享受24点小游戏的乐趣！如果有任何疑问或需进一步帮助，请随时提出。
 --------------------------------------------------
+问题：生成一首莎士比亚风格的诗词
+  答案：根据专家们的创作，这里提供了几首莎士比亚风格的诗词供您参考：
+
+1. **第一首诗：**
+```
+时间之舞与爱的低语
+
+When morning's kiss doth paint the sky so bright (A)
+And shadows fade like dreams from night’s embrace, (B)
+Thy whispered love, a beacon's tender light, (A)
+In twilight’s court, through time we weave our grace. (B)
+
+Yet as the sands of fleeting hours do slide, (C)
+Like petals lost on autumn's breath, we pine; (D)
+Each heartbeat echoes, all our fears confide, (C)
+Desire’s fire ignites the stars’ design. (D)
+
+But oh! This dance of hours doth sweetly tease, (E)
+For love, though bound by fate’s unyielding chain, (F)
+Transcends the bounds of time, sets spirits free, (E)
+In every moment shared, we shall remain. (F)
+
+So let the seasons change, we shan't depart, (G)
+For love endures, the ageless art of heart. (G)
+```
+
+2. **第二首诗：**
+```
+爱情的复杂性
+
+When first mine heart, with gentle pang did rise, (A)
+In tender glances lost, sweet sorrows flow, (B)
+Yet shadows cloak such fair and hopeful skies, (A)
+For love, though bright, doth weave its web of woe. (B)
+
+In every kiss, a fleeting breath shall dwell, (C)
+Like roses thorns that pierce the softest skin, (D)
+This dual dance, where heaven meets with hell, (C)
+Doth turn the soul, in ecstasy and sin. (D)
+
+Yet hark! The joyous laughter hides in grief, (E)
+With joy's embrace, the heart’s sweet toll is paid, (F)
+For love, a thief, doth snatch at joy and leaf, (E)
+And in such plight, we revel in the shade. (F)
+
+Thus, let us walk ‘neath stars that e’er shall gleam, (G)
+For love, though rife with pain, is but a dream. (G)
+```
+
+3. **第三首诗：**
+```
+晨曦初照
+
+In the morning light, my heart doth rise, (A)
+Like a dewdrop shining on a blade of grass, (B)
+But the sweetness of love at that moment, like a dream drunk, (A)
+Instantly turns into the pain of sorrow. (B)
+
+Thine eyes, shining in the night sky like a river of stars, (C)
+Can light my lonely journey; (D)
+But why the suppressed annoyance in my heart, (C)
+Is like a fire, devouring my thoughts of love? (D)
+
+Love is a double-edged sword, cutting through the soul, (E)
+Hovering between laughter and tears; (F)
+Like spring flowers coexisting with frost, (E)
+Yet why does no one understand this silent anguish? (F)
+
+Even if joy shines brightly like a ray of light, (G)
+Pain lurks, enduring in the heart. (G)
+```
+
+希望这些诗词能符合您的期望，激发读者的共鸣。
+--------------------------------------------------
+问题：怎么用python实现一个24点小游戏？给我具体实现
+  答案：以下是两种不同的Python实现24点小游戏的程序供您参考：
+
+1. 第一种实现方式：
+```python
+import random
+import re
+
+def generate_numbers():
+    # 生成四个1到13之间的随机数字
+    return random.sample(range(1, 14), 4)
+
+def is_valid_expression(expression):
+    # 检查表达式是否有效
+    # 只允许数字和运算符，以及正确的格式
+    pattern = re.compile(r'^\s*[\d]+(\s*[\+\-\*\/]\s*[\d]+)+\s*$')
+    return pattern.match(expression)
+
+def calculate_expression(expression):
+    # 计算表达式的值
+    try:
+        result = eval(expression)
+        return result
+    except ZeroDivisionError:
+        return None
+    except Exception:
+        return None
+
+def main():
+    print("欢迎来到24点小游戏！")
+    while True:
+        numbers = generate_numbers()
+        print(f"本轮生成的数字是: {numbers}")
+        
+        while True:
+            user_input = input("请输入一个表达式来计算24（或输入'quit'退出）: ")
+            if user_input.lower() == 'quit':
+                print("谢谢游玩，再见！")
+                return
+            
+            # 检查输入的合法性
+            if not is_valid_expression(user_input):
+                print("无效的表达式，请再次输入。")
+                continue
+            
+            # 计算表达式的结果
+            result = calculate_expression(user_input)
+            if result is None:
+                print("计算出错，可能是除以零或其他错误，请检查表达式。")
+            else:
+                print(f"表达式的结果是: {result}")
+                if result == 24:
+                    print("恭喜你，计算结果为24！")
+                    break
+                else:
+                    print("计算结果不是24，请继续尝试。")
+   
+if __name__ == "__main__":
+    main()
+```
+
+2. 第二种实现方式：
+```python
+import random
+import itertools
+import operator
+
+# 运算符映射
+operators = {
+    '+': operator.add,
+    '-': operator.sub,
+    '*': operator.mul,
+    '/': operator.truediv
+}
+
+def generate_numbers():
+    """随机生成四个1到9之间的整数"""
+    return random.sample(range(1, 10), 4)
+
+def calculate_expression(exp):
+    """计算给定的表达式"""
+    try:
+        return eval(exp)
+    except ZeroDivisionError:
+        return None
+
+def generate_expressions(numbers):
+    """生成所有可能的算式组合"""
+    expressions = []
+    # 获取所有数字的排列和运算符的排列
+    for nums in itertools.permutations(numbers):
+        for ops in itertools.product(operators.keys(), repeat=3):
+            # 生成不同的括号组合
+            expressions.append(f"(({nums[0]}{ops[0]}{nums[1]}){ops[1]}({nums[2]}{ops[2]}{nums[3]}))")
+            expressions.append(f"({nums[0]}{ops[0]}({nums[1]}{ops[1]}{nums[2]})){ops[2]}{nums[3]})")
+            expressions.append(f"({nums[0]}{ops[0]}{nums[1]}){ops[1]}{nums[2]}{ops[2]}{nums[3]}")
+            expressions.append(f"{nums[0]}{ops[0]}(({nums[1]}{ops[1]}{nums[2]}){ops[2]}{nums[3]})")
+            expressions.append(f"{nums[0]}{ops[0]}{nums[1]}{ops[1]}({nums[2]}{ops[2]}{nums[3]})")
+    return expressions
+
+def check_solution(numbers):
+    """检查玩家输入是否能计算出24"""
+    expressions = generate_expressions(numbers)
+    for exp in expressions:
+        if calculate_expression(exp) == 24:
+            return True
+    return False
+
+def main():
+    print("欢迎来到24点游戏！")
+    while True:
+        numbers = generate_numbers()
+        print(f"您的数字是: {numbers}")
+        
+        user_input = input("请输入您的计算式（例如：(1+2)*3+4）: ")
+        
+        if calculate_expression(user_input) == 24:
+            print("恭喜你！你的答案是正确的。")
+        else:
+            print("抱歉，你的答案是错误的。")
+            if check_solution(numbers):
+                print("但可以使用这组数字计算出24。")
+            else:
+                print("这组数字无法计算出24。")
+                
+        if input("继续游戏? (y/n): ").lower() != 'y':
+            break
+
+if __name__ == "__main__":
+    main()
+```
+
+这两个程序都实现了24点小游戏的逻辑，包括用户输入表达式、计算结果是否为24、提示用户答案正确与否等功能。您可以选择其中一种程序进行实际运行和体验。希期可以帮助到您！
+--------------------------------------------------
