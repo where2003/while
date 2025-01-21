@@ -170,7 +170,6 @@ class MetaPrompt:
     def extract_score_from_judge(self, judge_response):
         # 提取所有评分
         matches = re.findall(r"评分:\s*(\d+(\.\d+)?)\s*分", judge_response)
-
         # 专家个人评分（除最后一个）
         expert_scores = []
         for match in matches[:-1]:
@@ -238,7 +237,8 @@ class MetaPrompt:
 # 示例运行
 meta_prompt = MetaPrompt('gpt-4o-mini')
 # user_query = "怎么用python实现一个24点小游戏？给我具体实现"
-user_query = "生成一首苏轼风格的诗词，内容是与山水有关的"
+# user_query = "生成一首苏轼风格的诗词，内容是与山水有关的"
+user_query = "请解答一个问题：6 6 8 4如何组成24点"
 meta_prompt.init_expert(user_query)
 final_response = meta_prompt.analyze(user_query)
 print("\n\n\n\n\n\n\n\n\n第一版方案最终结果：")
